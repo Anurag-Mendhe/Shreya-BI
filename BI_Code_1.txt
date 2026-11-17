@@ -1,0 +1,156 @@
+# Read the DNA sequence from the file
+
+file_path = "/home/anurag/Codes_7th_Sem/BI/BIDatasets/Assign1/dna_sequence.t
+with open(file_path, "r") as file:
+	lines = file.readlines()
+# Support plain DNA text and FASTA-format files
+dna_sequence = "".join(
+	line.strip()
+	for line in lines
+	if line.strip() and not line.startswith(">")
+).upper()
+
+===================================================================================================
+
+# Step 2: Validate the DNA sequence
+
+valid_bases = {"A", "T", "G", "C"}
+
+===================================================================================================
+
+if not dna_sequence:
+	raise ValueError("The DNA sequence file is empty.")
+invalid_bases = set(dna_sequence) - valid_bases
+if invalid_bases:
+	raise ValueError(f"Invalid DNA characters found: {invalid_bases}")
+
+===================================================================================================
+# Step 3: Display basic information
+
+print("DNA Sequence Analysis")
+print("---------------------")
+print("Sequence length:", len(dna_sequence), "bases")
+print("DNA sequence:", dna_sequence)
+
+===================================================================================================
+# Step 4: Calculate GC content
+
+g_count = dna_sequence.count("G")
+c_count = dna_sequence.count("C")
+gc_count = g_count + c_count
+gc_content = (gc_count / len(dna_sequence)) * 100
+
+print("\nGC Content Analysis")
+print("-------------------")
+print("G count:", g_count)
+print("C count:", c_count)
+print("Total G + C:", gc_count)
+print(f"GC Content: {gc_content:.2f}%")
+
+===================================================================================================
+
+# Step 5: Search for a DNA motif
+
+motif_to_find = "ATG"
+motif_positions = []
+
+for i in range(len(dna_sequence) - len(motif_to_find) + 1):
+	if dna_sequence[i:i + len(motif_to_find)] == motif_to_find:
+		motif_positions.append(i + 1) # 1-based position
+
+print("\nMotif Search")
+print("------------")
+print("Motif:", motif_to_find)
+
+if motif_positions:
+	print("Motif positions:", motif_positions)
+	print("Total occurrences:", len(motif_positions))
+else:
+	print("Motif not found.")
+
+===================================================================================================
+
+# Step 6: Identify candidate coding regions
+# Search for ATG start codons and in-frame stop codons
+
+start_codon = "ATG"
+stop_codons = {"TAA", "TAG", "TGA"}
+coding_regions = []
+
+for i in range(len(dna_sequence) - 2):
+	if dna_sequence[i:i + 3] == start_codon:
+		# Search in the same reading frame
+		for j in range(i + 3, len(dna_sequence) - 2, 3):
+		codon = dna_sequence[j:j + 3]
+		
+		if codon in stop_codons:
+			coding_regions.append({
+				"start": i + 1,
+				"end": j + 3,
+				"length": j + 3 - i,
+				"sequence": dna_sequence[i:j + 3],
+				"stop_codon": codon
+			})
+			break
+
+===================================================================================================
+
+# Step 7: Display candidate coding regions
+
+print("\nCandidate Coding Region Analysis")
+print("--------------------------------")
+
+if coding_regions:
+	print("Number of candidate coding regions:", len(coding_regions))
+
+	for number, region in enumerate(coding_regions, start=1):
+		print(f"\nCoding Region {number}")
+		print("Start position:", region["start"])
+		print("End position:", region["end"])
+		print("Length:", region["length"], "bases")
+		print("Start codon:", start_codon)
+		print("Stop codon:", region["stop_codon"])
+		print("Sequence:", region["sequence"])
+else:
+	print("No candidate coding regions found.")
+
+print("\nAnalysis completed successfully.")
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
