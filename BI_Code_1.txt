@@ -1,6 +1,6 @@
 # Read the DNA sequence from the file
 
-file_path = "/home/anurag/Codes_7th_Sem/BI/BIDatasets/Assign1/dna_sequence.t
+file_path = r"C:\Users\Anurag\Desktop\dna_sequence.txt"
 with open(file_path, "r") as file:
 	lines = file.readlines()
 # Support plain DNA text and FASTA-format files
@@ -78,21 +78,21 @@ stop_codons = {"TAA", "TAG", "TGA"}
 coding_regions = []
 
 for i in range(len(dna_sequence) - 2):
-	if dna_sequence[i:i + 3] == start_codon:
-		# Search in the same reading frame
-		for j in range(i + 3, len(dna_sequence) - 2, 3):
-		codon = dna_sequence[j:j + 3]
-		
-		if codon in stop_codons:
-			coding_regions.append({
-				"start": i + 1,
-				"end": j + 3,
-				"length": j + 3 - i,
-				"sequence": dna_sequence[i:j + 3],
-				"stop_codon": codon
-			})
-			break
+    if dna_sequence[i:i + 3] == start_codon:
 
+        # Search in the same reading frame
+        for j in range(i + 3, len(dna_sequence) - 2, 3):
+            codon = dna_sequence[j:j + 3]
+
+            if codon in stop_codons:
+                coding_regions.append({
+                    "start": i + 1,
+                    "end": j + 3,
+                    "length": j + 3 - i,
+                    "sequence": dna_sequence[i:j + 3],
+                    "stop_codon": codon
+                })
+                break
 ===================================================================================================
 
 # Step 7: Display candidate coding regions
